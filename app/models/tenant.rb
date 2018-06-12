@@ -45,5 +45,9 @@ class Tenant < ApplicationRecord
       #
     end
 
+  def tenant_params
+    params.require(:user).permit(:name,:plan)
+  end 
+
    
 end
