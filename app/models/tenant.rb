@@ -6,7 +6,11 @@ class Tenant < ApplicationRecord
   validates_presence_of :name
   has_many :projects, dependent: :destroy
 
-    def self.create_new_tenant(tenant_params, user_params, coupon_params)
+  def can_create_projects?
+    (plan =='free' && projects.count < 1) || (plan == 'premium') 
+  end
+
+  def self.create_new_tenant(tenant_params, user_params, coupon_params)
 
       tenant = Tenant.new(tenant_params)
 
@@ -18,7 +22,7 @@ class Tenant < ApplicationRecord
         tenant.save    # create the tenant
       end
       return tenant
-    end
+  end
 
   # ------------------------------------------------------------------------
   # new_signups_not_permitted? -- returns true if no further signups allowed
